@@ -1,9 +1,6 @@
 # Notas:
 
-Este es un pequeño servidor de express listo para ejecutarse y servir la carpeta public en la web.
-
-Recuerden que deben de reconstruir los módulos de node con el comando
-
-```
-npm install
-```
+Es una aplicacion de un chat avanzado creado con nodejs y socket.io
+y maquetado con jquery.
+puedes visitar el proyecto en ejecucion en la 
+siguiente direccion: ```https://chat-nodejs-melara.herokuapp.com/```
