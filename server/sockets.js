@@ -16,20 +16,26 @@ module.exports = function (io) {
       usuarios.agregarPersona(client.id, data.nombre, data.sala);
       let personasSala = usuarios.getPersonasSala(data.sala);
       client.broadcast.to(data.sala).emit('listaPersona', personasSala);
+      client.broadcast.to(data.sala).emit('crearMensaje', crearMensaje(
+        'Administrador', `${ data.nombre } se unio al chat`
+      ));     
       callback(personasSala);
     });
 
-    client.on('crearMensaje', function (data) {
+    client.on('crearMensaje', function (data, callback) {
       let persona = usuarios.getPersona(client.id);
       let crearMensajeVar = crearMensaje(persona.nombre, data.mensaje);
       client.broadcast.to(persona.sala).emit('crearMensaje', crearMensajeVar);
+      callback(crearMensajeVar);
     });
     
     client.on('disconnect', function () {
       let personaBorrada = usuarios.borrarPersona(client.id);
+      let personasSala   = usuarios.getPersonasSala(personaBorrada.sala);
       client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje(
         'Administrador', `${ personaBorrada.nombre } abadono el chat`
-      ));
+      ));      
+      client.broadcast.to(personaBorrada.sala).emit('listaPersona', personasSala);
     });
 
     client.on('mensajePrivado', function (data) {
